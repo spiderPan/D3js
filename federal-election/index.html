@@ -10,11 +10,44 @@
         #map-canvas svg {
             width: 100%;
         }
+
+        .info-row {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999;
+        }
+
+        .liberal {
+            background: #D71920;
+        }
+
+        .conservative {
+            background: #0C6AAA;
+        }
+
+        .ndp {
+            background: #f57e20;
+        }
+
+        .quebecois {
+            background: #26A4D6;
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
+        <div class="row">
+            <div class=" info-row">
+                <div class="col-md-12 text-center">
+                    <span class="label liberal">Liberal</span>
+                    <span class="label conservative">Conservative</span>
+                    <span class="label ndp">NDP</span>
+                    <span class="label quebecois">Bloc Québécois</span>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="thumbnail">
