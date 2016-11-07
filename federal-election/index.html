@@ -6,15 +6,24 @@
     <title>Canada 2015 Federal Election</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <style>
-        #map-canvas svg {
+        body {
+            display: block;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #map-canvas {
             width: 100%;
         }
 
         .info-row {
             position: fixed;
-            top: 0;
-            width: 100%;
+            top: 50%;
+            left: 0;
+            transform: translate(0, -50%);
+            width: 300px;
             z-index: 9999;
         }
 
@@ -39,31 +48,29 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class=" info-row">
+            <div class="info-row">
                 <div class="col-md-12 text-center">
-                    <span class="label liberal">Liberal</span>
-                    <span class="label conservative">Conservative</span>
-                    <span class="label ndp">NDP</span>
-                    <span class="label quebecois">Bloc Québécois</span>
+                    <div id="info">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Result</h3>
+                            </div>
+                            <div class="text-center">
+                                <span class="label liberal">Liberal</span>
+                                <span class="label conservative">Conservative</span>
+                                <span class="label ndp">NDP</span>
+                                <span class="label quebecois">Bloc Québécois</span>
+                            </div>
+                            <div class="panel-body area-result">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="thumbnail">
-                    <div id="map-canvas"></div>
-                    <div class="caption">
-                        <div id="info">
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Result</h3>
-                                </div>
-                                <div class="panel-body area-result">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div id="map-canvas"></div>
             </div>
         </div>
     </div>
