@@ -1,6 +1,5 @@
-var width = 1240;
-var height = 1000;
-
+var width = 1240,
+    height = window.innerHeight;
 var svg = d3.select('body').append('svg')
     .attr('width', width)
     .attr('height', height)
@@ -8,22 +7,39 @@ var svg = d3.select('body').append('svg')
     .append('g')
     .attr('transform', 'translate(0,0)');
 
-var projection = d3.geoMercator()
-    .center([-96, 64])
-    .scale(500)
-    .translate([width / 2, height / 2]);
+d3.queue()
+    .defer(d3.json, "./data/Canada.json")
+    .defer(d3.json, "./data/confederation-date.json")
+    .await(analyze);
 
-var path = d3.geoPath()
-    .projection(projection);
-
-var color = d3.scaleOrdinal(d3.schemeCategory20),
-    flagColor = ['#ff0000', '#ffffff'];
-
-d3.json('./data/Canada.json', function(error, root) {
+function analyze(error, canadaProvince, confederationDate) {
     if (error) {
-        return console.error(error);
+        console.log(error);
+        throw error;
     }
-    console.log(root.features);
+    var provinces = canadaProvince.features;
+    provinces.forEach(function(province) {
+        confederationDate.forEach(function(confederation) {
+            if (confederation.name === province.properties.name) {
+                province.properties.join_date = confederation.date;
+            }
+        });
+    });
+
+    drawMap(canadaProvince);
+}
+
+function drawMap(root) {
+    var azimuthalprojection = d3.geoAzimuthalEqualArea()
+        .rotate([100, -45])
+        .center([5, 20])
+        .scale(800)
+        .translate([width / 2, height / 2]);
+
+    var path = d3.geoPath().projection(azimuthalprojection);
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20),
+        flagColor = ['#ff0000', '#ffffff'];
 
     svg.selectAll('path')
         .data(root.features.sort(function(a, b) {
@@ -63,4 +79,4 @@ d3.json('./data/Canada.json', function(error, root) {
         })
         .attr('text-anchor', 'middle')
         .attr('font-size', '6pt');
-});
+}

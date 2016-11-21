@@ -29,20 +29,7 @@ function drawMap(districts) {
         .center([5, 20])
         .scale(800)
         .translate([width / 2, height / 2]);
-    // var center = d3.geoCentroid(districts),
-    //     originalScale = 150;
-    // var projection = d3.geoMercator().center(center).scale(originalScale).translate([width / 2, height / 2]);
-    // var path = d3.geoPath().projection(projection);
-    // var bounds = path.bounds(districts),
-    //     hscale = originalScale * width / (bounds[1][0] - bounds[0][0]),
-    //     vscale = originalScale * height / (bounds[1][1] - bounds[0][1]),
-    //     scale = (hscale < vscale) ? hscale : vscale,
-    //     offset = [width - (bounds[0][0] + bounds[1][0]) / 2,
-    //         height - (bounds[0][1] + bounds[1][1]) / 2
-    //     ];
 
-    // projection = d3.geoMercator().center(center)
-    //     .scale(scale).translate(offset);
     var path = d3.geoPath().projection(azimuthalprojection);
 
     svg.selectAll('path')
