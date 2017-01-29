@@ -7,6 +7,8 @@ var svg = d3.select('body').append('svg')
     .append('g')
     .attr('transform', 'translate(0,0)');
 
+
+
 d3.queue()
     .defer(d3.json, "./data/Canada.json")
     .defer(d3.json, "./data/confederation-date.json")
@@ -17,11 +19,23 @@ function analyze(error, canadaProvince, confederationDate) {
         console.log(error);
         throw error;
     }
-    var provinces = canadaProvince.features;
+    var provinces = canadaProvince.features,
+        dateArray = [];
+
+    confederationDate.forEach(function(confederation) {
+        var join_date = new Date(confederation.date).getTime() / 1000;
+        dateArray.push(join_date);
+    });
+
+    var linearScale = d3.scaleQuantize()
+        .domain([d3.min(dateArray), d3.max(dateArray)])
+        .range([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
     provinces.forEach(function(province) {
         confederationDate.forEach(function(confederation) {
             if (confederation.name === province.properties.name) {
                 province.properties.join_date = confederation.date;
+                province.properties.join_order = linearScale(new Date(confederation.date).getTime() / 1000);
             }
         });
     });
@@ -43,33 +57,41 @@ function drawMap(root) {
 
     svg.selectAll('path')
         .data(root.features.sort(function(a, b) {
-            var timeA = new Date(a.properties.confederation_date).getTime() / 1000,
-                timeB = new Date(b.properties.confederation_date).getTime() / 1000
+            var timeA = new Date(a.properties.join_date).getTime() / 1000,
+                timeB = new Date(b.properties.join_date).getTime() / 1000;
             return timeA - timeB;
         }))
         .enter()
         .append('path')
         .attr('stroke', '#000')
         .attr('stroke-width', 1)
+        .transition()
+        .delay(function(d, i) {
+            console.log(d.properties.join_order);
+            return d.properties.join_order * 2000;
+        })
+        .attr('alt', function(d, i) {
+            return d.properties.name;
+        })
         .attr('fill', function(d, i) {
             return color(i);
         })
-        .attr('d', path)
-        .on('mouseover', function(d, i) {
-            d3.select(this)
-                .attr('fill', 'yellow');
-        })
-        .on('mouseout', function(d, i) {
-            d3.select(this)
-                .attr('fill', color(i));
-        });
+        .attr('d', path);
+    // .on('mouseover', function(d, i) {
+    //     d3.select(this)
+    //         .attr('fill', 'yellow');
+    // })
+    // .on('mouseout', function(d, i) {
+    //     d3.select(this)
+    //         .attr('fill', color(i));
+    // });
 
     svg.selectAll('text')
         .data(root.features)
         .enter()
         .append('svg:text')
         .text(function(d) {
-            return d.properties.name;
+            return d.properties.name + ' ' + d.properties.join_date;
         })
         .attr('x', function(d) {
             return path.centroid(d)[0];
