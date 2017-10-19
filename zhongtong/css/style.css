@@ -1,0 +1,67 @@
+html, body, #d3-map {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#d3-map {
+  height: 700px;
+}
+
+.stations, .stations svg {
+  position: absolute;
+}
+
+.stations svg {
+  width: 60px;
+  height: 20px;
+  padding-right: 100px;
+  font: 10px sans-serif;
+}
+
+.stations circle {
+  fill: brown;
+  stroke: black;
+  stroke-width: 1.5px;
+}
+
+/*Map View*/
+.provinces {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.hk {
+    position: relative;
+    left: -750px;
+    top: 0px;
+}
+/*
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.province {
+  fill: #cde;
+  stroke: #fff;
+    stroke-linejoin: round;
+  stroke-linecap: round;
+}
+*/
+/*#provinces .active, #states .active {
+  fill: #89a;
+}
+#cities {
+  stroke-width: 0;
+}
+.city {
+  fill: #345;
+  stroke: #fff;
+}
+pre.prettyprint {
+  border: 1px solid #ccc;
+  margin-bottom: 0;
+  padding: 9.5px;
+}*/
